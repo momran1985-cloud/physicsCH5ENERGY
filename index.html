@@ -1,0 +1,1060 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة الطاقة وحفظها - مدارس الأنجال الأهلية</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Cairo -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            navy: '#0f172a',
+                            blue: '#1e3a8a',
+                            accent: '#d97706',
+                            gold: '#f59e0b',
+                            emerald: '#059669',
+                            purple: '#6d28d9',
+                            lightBg: '#f8fafc'
+                        }
+                    },
+                    fontFamily: {
+                        cairo: ['Cairo', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: #f1f5f9;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 9999px;
+        }
+        .math-symbol {
+            font-family: 'Times New Roman', serif;
+            font-style: italic;
+            font-weight: bold;
+        }
+        .badge-d1 { background-color: #ef4444; color: white; }
+        .badge-d2 { background-color: #f59e0b; color: white; }
+        .badge-d3 { background-color: #3b82f6; color: white; }
+        .badge-d4 { background-color: #8b5cf6; color: white; }
+    </style>
+</head>
+<body class="text-slate-800 antialiased min-h-screen flex flex-col justify-between">
+
+    <!-- Header / Branding Bar -->
+    <header class="bg-gradient-to-r from-slate-900 via-blue-950 to-slate-900 text-white shadow-xl sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center gap-4">
+            <!-- School Logo & Title -->
+            <div class="flex items-center space-x-3 space-x-reverse">
+                <div class="bg-white/10 p-2.5 rounded-2xl border border-white/20 backdrop-blur-md flex items-center justify-center">
+                    <svg class="w-8 h-8 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="text-lg md:text-xl font-bold text-amber-400 leading-tight">مدارس الأنجال الأهلية بالأحساء</h1>
+                    <p class="text-xs text-slate-300">منصة الفيزياء التفاعلية | الفصل 4: الطاقة وحفظها</p>
+                </div>
+            </div>
+
+            <!-- Student Profile Badge & Teacher Info -->
+            <div id="userInfoHeader" class="hidden flex items-center space-x-4 space-x-reverse bg-white/10 px-4 py-1.5 rounded-full border border-white/15">
+                <div class="text-xs text-right">
+                    <p class="text-slate-300">الطالب: <span id="headerStudentName" class="font-bold text-white">---</span></p>
+                    <p class="text-slate-300">المعلم المتابع: <span class="font-bold text-amber-300">أ. محمد عمران</span></p>
+                </div>
+                <div id="studentLevelBadge" class="px-3 py-1 rounded-full text-xs font-bold badge-d1">
+                    D1: مبتدئ
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Dynamic Canvas Container -->
+    <main class="max-w-7xl mx-auto px-4 py-6 flex-grow w-full">
+
+        <!-- Navigation Tabs (Dynamic Visibility) -->
+        <nav id="mainNav" class="hidden bg-white shadow-md rounded-2xl p-2 mb-6 flex overflow-x-auto gap-2 custom-scrollbar text-sm font-semibold">
+            <button onclick="switchTab('diagnostic')" id="tab-diagnostic" class="nav-btn px-4 py-2.5 rounded-xl transition flex items-center gap-2 whitespace-nowrap bg-blue-50 text-blue-800">
+                <i class="fa-solid fa-clipboard-question"></i> التشخيص والتسكين
+            </button>
+            <button onclick="switchTab('engage')" id="tab-engage" class="nav-btn px-4 py-2.5 rounded-xl transition flex items-center gap-2 whitespace-nowrap text-slate-600 hover:bg-slate-100">
+                <i class="fa-solid fa-compass"></i> التهيئة والاستكشاف
+            </button>
+            <button onclick="switchTab('explain')" id="tab-explain" class="nav-btn px-4 py-2.5 rounded-xl transition flex items-center gap-2 whitespace-nowrap text-slate-600 hover:bg-slate-100">
+                <i class="fa-solid fa-book-open-reader"></i> الشرح والتفسير
+            </button>
+            <button onclick="switchTab('simulation')" id="tab-simulation" class="nav-btn px-4 py-2.5 rounded-xl transition flex items-center gap-2 whitespace-nowrap text-slate-600 hover:bg-slate-100">
+                <i class="fa-solid fa-flask-vial text-amber-500"></i> المحاكاة والتجارب
+            </button>
+            <button onclick="switchTab('enrichment')" id="tab-enrichment" class="nav-btn px-4 py-2.5 rounded-xl transition flex items-center gap-2 whitespace-nowrap text-slate-600 hover:bg-slate-100">
+                <i class="fa-solid fa-brain text-purple-600"></i> الإثراء والتوسع
+            </button>
+            <button onclick="switchTab('finalEval')" id="tab-finalEval" class="nav-btn px-4 py-2.5 rounded-xl transition flex items-center gap-2 whitespace-nowrap text-slate-600 hover:bg-slate-100">
+                <i class="fa-solid fa-award text-emerald-600"></i> التقويم النهائي والشهادة
+            </button>
+        </nav>
+
+        <!-- Dynamic Views -->
+        <div id="contentArea">
+
+            <!-- STEP 0: Student Login & Registration View -->
+            <section id="view-login" class="max-w-2xl mx-auto bg-white rounded-3xl shadow-2xl p-6 md:p-10 border border-slate-100 my-8">
+                <div class="text-center space-y-4 mb-8">
+                    <div class="w-20 h-20 bg-gradient-to-tr from-blue-900 to-indigo-700 rounded-3xl mx-auto flex items-center justify-center text-white shadow-xl shadow-blue-900/20">
+                        <i class="fa-solid fa-graduation-cap text-4xl"></i>
+                    </div>
+                    <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900">مرحباً بك في المنصة التفاعلية للفيزياء</h2>
+                    <p class="text-slate-600 text-sm md:text-base">يرجى تسجيل بياناتك لبدء رحلة التعلّم المتمايز في درس "الطاقة وحفظها"</p>
+                </div>
+
+                <form onsubmit="handleLogin(event)" class="space-y-6">
+                    <div>
+                        <label for="studentName" class="block text-sm font-bold text-slate-700 mb-2">اسم الطالب الثلاثي:</label>
+                        <div class="relative">
+                            <input type="text" id="studentName" required placeholder="مثال: أحمد عبد الله الغامدي" 
+                                   class="w-full px-4 py-3.5 pl-10 rounded-2xl border border-slate-300 focus:ring-4 focus:ring-blue-100 focus:border-blue-600 outline-none transition font-semibold text-slate-800">
+                            <i class="fa-solid fa-user absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                            <span class="text-xs text-slate-500 font-bold block mb-1">المعلم المتابع</span>
+                            <span class="text-sm font-bold text-blue-900 flex items-center gap-2">
+                                <i class="fa-solid fa-chalkboard-user text-amber-500"></i> أ. محمد عمران
+                            </span>
+                        </div>
+                        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                            <span class="text-xs text-slate-500 font-bold block mb-1">المؤسسة التعليمية</span>
+                            <span class="text-sm font-bold text-blue-900 flex items-center gap-2">
+                                <i class="fa-solid fa-school text-blue-600"></i> مدارس الأنجال الأهلية
+                            </span>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="w-full py-4 bg-gradient-to-r from-blue-700 to-indigo-800 text-white font-bold rounded-2xl shadow-lg shadow-blue-700/30 hover:shadow-xl hover:from-blue-800 hover:to-indigo-900 transition flex items-center justify-center gap-2 text-lg">
+                        بدء الاختبار التشخيصي <i class="fa-solid fa-arrow-left"></i>
+                    </button>
+                </form>
+            </section>
+
+            <!-- STEP 1: Diagnostic Assessment (10 Questions) -->
+            <section id="view-diagnostic" class="hidden bg-white rounded-3xl shadow-xl p-6 md:p-8 border border-slate-100">
+                <div class="flex justify-between items-center pb-4 mb-6 border-b border-slate-200 flex-wrap gap-4">
+                    <div>
+                        <span class="px-3 py-1 bg-amber-100 text-amber-800 rounded-full text-xs font-bold">التقويم القَبلي</span>
+                        <h2 class="text-xl md:text-2xl font-bold text-slate-900 mt-1">الاختبار التشخيصي للتسكين بالمستوى</h2>
+                    </div>
+                    <div class="text-sm font-bold text-slate-500">
+                        سؤال <span id="diagProgress" class="text-blue-700">1</span> من 10
+                    </div>
+                </div>
+
+                <div id="diagnosticQuizCard" class="space-y-6">
+                    <!-- Dynamic Question Loaded Here -->
+                </div>
+            </section>
+
+            <!-- STEP 1.5: Level Classification Result -->
+            <section id="view-levelResult" class="hidden max-w-3xl mx-auto bg-white rounded-3xl shadow-2xl p-6 md:p-10 text-center space-y-6">
+                <div id="levelIconBox" class="w-24 h-24 rounded-full mx-auto flex items-center justify-center text-4xl shadow-xl">
+                    <i class="fa-solid fa-layer-group"></i>
+                </div>
+                <div>
+                    <h3 class="text-sm font-bold text-slate-500 mb-1">تمت عملية التقييم التشخيصي بنجاح</h3>
+                    <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900" id="levelTitle">---</h2>
+                    <p id="levelDesc" class="text-slate-600 mt-2 text-sm md:text-base max-w-xl mx-auto">---</p>
+                </div>
+
+                <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200 text-right space-y-3">
+                    <h4 class="font-bold text-slate-800 text-sm border-b pb-2 flex items-center gap-2">
+                        <i class="fa-solid fa-route text-amber-500"></i> الخطة التعليمية المقترحة لمستواك:
+                    </h4>
+                    <ul id="levelPlanList" class="text-xs md:text-sm text-slate-700 space-y-2 list-disc list-inside">
+                        <!-- Dynamic Plan Items -->
+                    </ul>
+                </div>
+
+                <button onclick="startLearningPath()" class="px-8 py-3.5 bg-blue-700 text-white font-bold rounded-2xl shadow-lg hover:bg-blue-800 transition">
+                    الانتقال لمسار التعلم المخصص <i class="fa-solid fa-graduation-cap mr-2"></i>
+                </button>
+            </section>
+
+            <!-- STEP 2: Engage & Explore (5E Model Phase 1) -->
+            <section id="view-engage" class="hidden space-y-6">
+                <div class="bg-gradient-to-r from-blue-900 to-indigo-900 text-white rounded-3xl p-6 md:p-8 shadow-xl">
+                    <span class="px-3 py-1 bg-white/20 text-amber-300 rounded-full text-xs font-bold">1. التهيئة والاستكشاف (Engage & Explore)</span>
+                    <h2 class="text-2xl md:text-3xl font-extrabold mt-2">ما هي الطاقة؟ وكيف تتغير صورها؟</h2>
+                    <p class="text-blue-100 text-sm md:text-base mt-2">نستخدم كلمة "طاقة" يومياً في مجالات شتى (طاقة الغذاء، الكهرباء، الحركة..). في الفيزياء: كيف ترتبط الطاقة بالشغل وقدرة الجسم على التغيير؟</p>
+                </div>
+
+                <!-- Interactive Initial Experiment (Bouncing Ball Simulation) -->
+                <div class="bg-white rounded-3xl p-6 shadow-xl border border-slate-100 grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="lg:col-span-2 space-y-4">
+                        <div class="flex justify-between items-center">
+                            <h3 class="font-bold text-slate-900 text-lg flex items-center gap-2">
+                                <i class="fa-solid fa-baseball text-amber-500"></i> التجربة الاستهلالية: محاكاة ارتداد الكرة والتفكير الناقد
+                            </h3>
+                            <button onclick="resetBouncingBall()" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-lg font-bold">
+                                إعادة التجربة <i class="fa-solid fa-rotate-right"></i>
+                            </button>
+                        </div>
+                        <p class="text-xs md:text-sm text-slate-600">
+                            قم باسقاط الكرة من ارتفاعات مختلفة، ثم لاحظ ارتفاع الارتداد ونسب تحول الطاقة بين الطاقة الحركية (KE)، طاقة الوضع (PE)، والحرارة المتولدة نتيجة الاحتكاك.
+                        </p>
+                        <div class="relative bg-slate-900 rounded-2xl h-64 overflow-hidden border border-slate-800 flex items-center justify-center">
+                            <canvas id="bouncingBallCanvas" class="w-full h-full"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200 space-y-4 flex flex-col justify-between">
+                        <div class="space-y-3">
+                            <h4 class="font-bold text-slate-900 text-sm">لوحة التحكم والاستكشاف</h4>
+                            <div>
+                                <label class="text-xs font-bold text-slate-600 block mb-1">ارتفاع السقوط الابتدائي: <span id="dropHeightVal" class="text-blue-700">3.0</span> متر</label>
+                                <input type="range" id="dropHeightRange" min="1" max="5" step="0.5" value="3" oninput="updateDropHeight(this.value)" class="w-full accent-blue-600">
+                            </div>
+                            <div>
+                                <label class="text-xs font-bold text-slate-600 block mb-1">نوع الكرة / معامل المرونة:</label>
+                                <select id="ballTypeSelect" onchange="changeBallType(this.value)" class="w-full p-2 text-xs font-semibold rounded-xl border border-slate-300 bg-white">
+                                    <option value="0.8">كرة مطاطية (مرونة عالية)</option>
+                                    <option value="0.5">كرة سلة (مرونة متوسطة)</option>
+                                    <option value="0.2">كرة صلبة (مرونة منخفضة)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-3 rounded-xl border border-slate-200 text-xs space-y-2">
+                            <p class="font-bold text-amber-700 flex items-center gap-1">
+                                <i class="fa-solid fa-lightbulb"></i> سؤال للتفكير الناقد:
+                            </p>
+                            <p class="text-slate-600">لماذا لا ترتد الكرة إلى نفس الارتفاع الذي سقطت منه في الحياة الواقعية؟</p>
+                            <button onclick="toggleAnswer('exploreAnswer')" class="text-blue-600 font-bold hover:underline">إظهار التفسير الفيزيائي</button>
+                            <p id="exploreAnswer" class="hidden text-slate-700 bg-amber-50 p-2 rounded border border-amber-200 mt-1">
+                                لأن جزءاً من الطاقة الميكانيكية تتحول إلى طاقة حرارية وطاقة صوتية أثناء التصادم بالأرض ومقاومة الهواء!
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Concept Quick Quiz (Phased) -->
+                <div class="bg-white p-6 rounded-3xl shadow-lg border border-slate-100">
+                    <h3 class="font-bold text-slate-900 text-md mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-list-check text-blue-600"></i> تقويم مرحلي سريع (التهيئة)
+                    </h3>
+                    <div id="phaseQuiz-1" class="space-y-3 text-sm">
+                        <p class="font-bold text-slate-800">س: الشغل المبذول لرفع جسم إلى أعلى يُختزن في الجسم على شكل:</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                            <button onclick="checkPhaseAnswer(1, 0, false, this)" class="p-3 text-right rounded-xl border hover:bg-slate-50 transition">طاقة حركية دورانية</button>
+                            <button onclick="checkPhaseAnswer(1, 1, true, this)" class="p-3 text-right rounded-xl border hover:bg-slate-50 transition">طاقة وضع جاذبية (PE)</button>
+                        </div>
+                        <div id="phaseFb-1" class="hidden p-3 rounded-xl text-xs font-bold"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- STEP 3: Explain (5E Model Phase 2 & Detailed Content) -->
+            <section id="view-explain" class="hidden space-y-8">
+                <div class="bg-gradient-to-r from-slate-900 to-blue-900 text-white rounded-3xl p-6 md:p-8 shadow-xl">
+                    <span class="px-3 py-1 bg-amber-400 text-slate-950 rounded-full text-xs font-bold">2. الشرح والتفسير التفصيلي (Explain)</span>
+                    <h2 class="text-2xl md:text-3xl font-extrabold mt-2">المفاهيم والقوانين الفيزيائية لدرس الطاقة وحفظها</h2>
+                </div>
+
+                <!-- Adaptive Content Filter for Differentiation -->
+                <div class="flex items-center justify-between bg-white p-4 rounded-2xl shadow-sm border border-slate-200 flex-wrap gap-3">
+                    <span class="text-xs font-bold text-slate-600">عرض المحتوى حسب المستويات التعليمية:</span>
+                    <div class="flex gap-2 flex-wrap text-xs">
+                        <button onclick="filterContent('all')" class="px-3 py-1.5 rounded-lg bg-slate-800 text-white font-bold">عرض الكل</button>
+                        <button onclick="filterContent('D1')" class="px-3 py-1.5 rounded-lg bg-red-100 text-red-800 font-bold">D1: الأساسيات</button>
+                        <button onclick="filterContent('D2')" class="px-3 py-1.5 rounded-lg bg-amber-100 text-amber-800 font-bold">D2: القوانين</button>
+                        <button onclick="filterContent('D3')" class="px-3 py-1.5 rounded-lg bg-blue-100 text-blue-800 font-bold">D3: الحسابات</button>
+                        <button onclick="filterContent('D4')" class="px-3 py-1.5 rounded-lg bg-purple-100 text-purple-800 font-bold">D4: التفكير المتقدم</button>
+                    </div>
+                </div>
+
+                <!-- Concept Card 1: Work-Energy Theorem & Kinetic Energy -->
+                <div class="concept-card D1 D2 D3 bg-white rounded-3xl p-6 shadow-md border border-slate-100 space-y-4">
+                    <div class="flex items-center gap-3 border-b pb-3">
+                        <div class="w-10 h-10 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center font-bold">1</div>
+                        <h3 class="text-lg font-bold text-slate-900">نظرية الشغل - الطاقة والطاقة الحركية (KE)</h3>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm text-slate-700">
+                        <div class="space-y-3">
+                            <p class="leading-relaxed">
+                                تنص <strong>نظرية الشغل - الطاقة</strong> على أن الشغل المبذول على جسم يساوي التغير في طاقته الحركية:
+                            </p>
+                            <div class="bg-blue-50 p-3 rounded-xl border border-blue-200 text-center text-blue-900 font-bold text-base">
+                                <span class="math-symbol">W = ΔKE = KE<sub>f</sub> - KE<sub>i</sub></span>
+                            </div>
+                            <ul class="list-disc list-inside space-y-1 text-xs">
+                                <li>إذا بذل المحيط شغلاً <strong>موجباً</strong> على النظام: تزداد سرعته وطاقته الحركية.</li>
+                                <li>إذا بذل النظام شغلاً <strong>سالباً</strong> (مثل قوة الاحتكاك): تقل طاقته الحركية.</li>
+                            </ul>
+                        </div>
+                        <div class="space-y-3 bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                            <h4 class="font-bold text-slate-900">الطاقة الحركية الخطية والدورانية:</h4>
+                            <p class="text-xs">
+                                <strong>الخطية:</strong> <span class="math-symbol">KE = ½ m v<sup>2</sup></span> (تعتمد طردياً على الكتلة ومربع السرعة).
+                            </p>
+                            <p class="text-xs">
+                                <strong>الدورانية:</strong> الطاقة الناتجة عن دوران الجسم حول محوره (مثل البلبل)، وتعتمد على السرعة الدورانية وتوزيع الكتلة.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Concept Card 2: Gravitational & Elastic Potential Energy -->
+                <div class="concept-card D1 D2 D3 bg-white rounded-3xl p-6 shadow-md border border-slate-100 space-y-4">
+                    <div class="flex items-center gap-3 border-b pb-3">
+                        <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center font-bold">2</div>
+                        <h3 class="text-lg font-bold text-slate-900">طاقة الوضع الجاذبية (PE) والقياس ومستوى الإسناد</h3>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm text-slate-700">
+                        <div class="space-y-3">
+                            <p>
+                                <strong>طاقة وضع الجاذبية:</strong> الطاقة المختزنة في النظام بسبب قوة الجاذبية الأرضية عند ابتعاد الجسم عن الأرض:
+                            </p>
+                            <div class="bg-amber-50 p-3 rounded-xl border border-amber-200 text-center text-amber-900 font-bold text-base">
+                                <span class="math-symbol">PE = m · g · h</span>
+                            </div>
+                            <p class="text-xs">
+                                <strong>مستوى الإسناد (Reference Level):</strong> هو المستوى المرجعي الذي تختار عنده طاقة الوضع مساوية للصفر (<span class="math-symbol">PE = 0</span>).
+                            </p>
+                        </div>
+                        <div class="space-y-3 bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                            <h4 class="font-bold text-slate-900">طاقة الوضع المرونية وقانون أينشتاين:</h4>
+                            <p class="text-xs leading-relaxed">
+                                <strong>طاقة الوضع المرونية:</strong> طاقة مختزنة في الجسم المرن نتيجة تغير شكله (مثل النوابض، والزناد، وقوس الرماية، والزانة عند الانثنائ).
+                            </p>
+                            <p class="text-xs leading-relaxed text-purple-900 font-semibold mt-2">
+                                <strong>تكافؤ الكتلة والطاقة (أينشتاين):</strong> الكتلة هي طاقة مادية مختزنة: 
+                                <span class="math-symbol">E<sub>0</sub> = m · c<sup>2</sup></span> (حيث c سرعة الضوء).
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Concept Card 3: Law of Conservation of Energy & Collisions -->
+                <div class="concept-card D2 D3 D4 bg-white rounded-3xl p-6 shadow-md border border-slate-100 space-y-4">
+                    <div class="flex items-center gap-3 border-b pb-3">
+                        <div class="w-10 h-10 rounded-xl bg-purple-100 text-purple-700 flex items-center justify-center font-bold">3</div>
+                        <h3 class="text-lg font-bold text-slate-900">قانون حفظ الطاقة الميكانيكية والتصادمات</h3>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs md:text-sm text-slate-700">
+                        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-2">
+                            <h4 class="font-bold text-blue-900">حفظ الطاقة الميكانيكية</h4>
+                            <p><span class="math-symbol">E = KE + PE</span></p>
+                            <p class="text-xs text-slate-600">في النظام المغلق والمعزول، الطاقة الميكانيكية الكلية تبقى ثابته بدون احتكاك: <span class="math-symbol">E<sub>i</sub> = E<sub>f</sub></span>.</p>
+                        </div>
+                        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-2">
+                            <h4 class="font-bold text-amber-900">أنواع التصادمات</h4>
+                            <ul class="space-y-1 text-xs">
+                                <li>• <strong>تصادم مرن:</strong> الطاقة الحركية محفوظة (<span class="math-symbol">KE<sub>i</sub> = KE<sub>f</sub></span>).</li>
+                                <li>• <strong>تصادم عديم المرونة:</strong> تقل الطاقة الحركية (<span class="math-symbol">KE<sub>i</sub> &gt; KE<sub>f</sub></span>).</li>
+                                <li>• <strong>تصادم فوق مرن (انفجاري):</strong> تزداد الطاقة الحركية (<span class="math-symbol">KE<sub>i</sub> &lt; KE<sub>f</sub></span>).</li>
+                            </ul>
+                        </div>
+                        <div class="bg-purple-50 p-4 rounded-2xl border border-purple-200 space-y-2">
+                            <h4 class="font-bold text-purple-900">تطبيق تفكير ناقد (D4)</h4>
+                            <p class="text-xs text-purple-800">
+                                عند تصادم سيارتين وتوقفهما تماماً، أين ذهبت الطاقة الحركية؟
+                                تحولت بالكامل إلى شغل تشويه وهياكل السيارات وطاقة حرارية وصوتية!
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Phase Quiz 2 -->
+                <div class="bg-white p-6 rounded-3xl shadow-lg border border-slate-100 space-y-4">
+                    <h3 class="font-bold text-slate-900 text-md flex items-center gap-2">
+                        <i class="fa-solid fa-vial text-emerald-600"></i> تقويم مرحلي (قوانين الطاقة وحفظها)
+                    </h3>
+                    <div id="phaseQuiz-2" class="space-y-3 text-sm">
+                        <p class="font-bold text-slate-800">س: سيارة كتلتها 1000 kg تتحرك بسرعة 10 m/s، ما مقدار طاقتها الحركية (KE)؟</p>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+                            <button onclick="checkPhaseAnswer(2, 0, false, this)" class="p-3 text-right rounded-xl border hover:bg-slate-50 transition">10,000 J</button>
+                            <button onclick="checkPhaseAnswer(2, 1, true, this)" class="p-3 text-right rounded-xl border hover:bg-slate-50 transition">50,000 J (قانون: ½ * 1000 * 100)</button>
+                            <button onclick="checkPhaseAnswer(2, 2, false, this)" class="p-3 text-right rounded-xl border hover:bg-slate-50 transition">100,000 J</button>
+                        </div>
+                        <div id="phaseFb-2" class="hidden p-3 rounded-xl text-xs font-bold"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- STEP 4: Simulation Bridge & Canvas Tool (Explain/Elaborate) -->
+            <section id="view-simulation" class="hidden space-y-6">
+                <div class="bg-gradient-to-r from-amber-600 to-amber-800 text-white rounded-3xl p-6 md:p-8 shadow-xl flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                    <div>
+                        <span class="px-3 py-1 bg-white/20 text-white rounded-full text-xs font-bold">3. المحاكاة والتجارب التفاعلية (PhET Bridge)</span>
+                        <h2 class="text-2xl md:text-3xl font-extrabold mt-1">محاكاة حفظ الطاقة الميكانيكية</h2>
+                        <p class="text-amber-100 text-xs md:text-sm mt-1">تتبع التحول المستمر بين طاقة الوضع والطاقة الحركية للبندول والمتزلج</p>
+                    </div>
+                    <a href="https://phet.colorado.edu/sims/html/energy-skate-park-basics/latest/energy-skate-park-basics_all.html" target="_blank" rel="noopener noreferrer"
+                       class="px-5 py-3 bg-white text-amber-900 font-bold rounded-2xl shadow-md hover:bg-amber-50 transition flex items-center gap-2 text-xs md:text-sm whitespace-nowrap">
+                        فتح محاكاة PhET الرسمية <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                    </a>
+                </div>
+
+                <!-- Custom HTML5 Interactive Pendulum & Energy Bar Simulation -->
+                <div class="bg-white rounded-3xl p-6 shadow-xl border border-slate-100 grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="lg:col-span-2 space-y-4">
+                        <div class="flex justify-between items-center">
+                            <h3 class="font-bold text-slate-900 text-base flex items-center gap-2">
+                                <i class="fa-solid fa-arrows-spin text-blue-600"></i> بيئة المحاكاة التفاعلية للبندول والتحول الحركي
+                            </h3>
+                            <div class="flex gap-2">
+                                <button onclick="startPendulumSim()" class="px-3 py-1 bg-emerald-600 text-white rounded-lg text-xs font-bold">تشغيل</button>
+                                <button onclick="pausePendulumSim()" class="px-3 py-1 bg-slate-600 text-white rounded-lg text-xs font-bold">إيقاف مؤقت</button>
+                            </div>
+                        </div>
+                        <div class="relative bg-slate-950 rounded-2xl h-80 border border-slate-800 overflow-hidden">
+                            <canvas id="pendulumCanvas" class="w-full h-full"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Live Energy Bar Chart & Controls -->
+                    <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200 flex flex-col justify-between space-y-4">
+                        <div class="space-y-4">
+                            <h4 class="font-bold text-slate-900 text-sm">مخطط مستويات الطاقة اللحظي</h4>
+                            
+                            <!-- Energy Bars -->
+                            <div class="space-y-3 text-xs font-bold">
+                                <div>
+                                    <div class="flex justify-between text-blue-700 mb-1">
+                                        <span>الطاقة الحركية (KE)</span>
+                                        <span id="keValText">0 J</span>
+                                    </div>
+                                    <div class="w-full bg-slate-200 h-3 rounded-full overflow-hidden">
+                                        <div id="keBar" class="bg-blue-600 h-full transition-all duration-75" style="width: 0%"></div>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <div class="flex justify-between text-amber-700 mb-1">
+                                        <span>طاقة الوضع (PE)</span>
+                                        <span id="peValText">0 J</span>
+                                    </div>
+                                    <div class="w-full bg-slate-200 h-3 rounded-full overflow-hidden">
+                                        <div id="peBar" class="bg-amber-500 h-full transition-all duration-75" style="width: 0%"></div>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <div class="flex justify-between text-emerald-700 mb-1">
+                                        <span>الطاقة الميكانيكية الكلية (E)</span>
+                                        <span id="totalEnergyText">0 J</span>
+                                    </div>
+                                    <div class="w-full bg-slate-200 h-3 rounded-full overflow-hidden">
+                                        <div id="totalEnergyBar" class="bg-emerald-600 h-full" style="width: 100%"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr class="border-slate-200">
+
+                            <!-- Controls -->
+                            <div class="space-y-2">
+                                <label class="text-xs font-bold text-slate-700 block">زاوية الإفلات الابتدائية: <span id="angleVal" class="text-blue-600">45</span>°</label>
+                                <input type="range" id="angleRange" min="10" max="80" value="45" oninput="changePendulumAngle(this.value)" class="w-full accent-amber-500">
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-3 rounded-xl border border-slate-200 text-xs text-slate-600">
+                            <p class="font-bold text-slate-800 mb-1"><i class="fa-solid fa-circle-info text-blue-500"></i> الملاحظة الفيزيائية:</p>
+                            عند النقطة السفلى تكون الطاقة الحركية أقصى ما يمكن وطاقة الوضع صفر، وعند أقصى ارتفاع تعود طاقة الوضع لأعلى قيمة وتتوقف الحركة لحظياً.
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- STEP 5: Elaborate & Differentiated Enrichment -->
+            <section id="view-enrichment" class="hidden space-y-6">
+                <div class="bg-gradient-to-r from-purple-900 to-indigo-900 text-white rounded-3xl p-6 md:p-8 shadow-xl">
+                    <span class="px-3 py-1 bg-white/20 text-purple-300 rounded-full text-xs font-bold">4. الإثراء والتوسع والتفكير الناقد (Elaborate)</span>
+                    <h2 class="text-2xl md:text-3xl font-extrabold mt-2">أنشطة وتحديات إثرائية متقدمة (D3 & D4)</h2>
+                    <p class="text-purple-100 text-xs md:text-sm mt-1">تطبيقات حسابية ومسائل تفكير ناقد لرفع الكفاءة وحل المشكلات الفيزيائية</p>
+                </div>
+
+                <!-- Enrichment Problem Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                    <!-- Problem 1: Skier Problem -->
+                    <div class="bg-white rounded-3xl p-6 shadow-md border border-slate-100 space-y-4 flex flex-col justify-between">
+                        <div class="space-y-3">
+                            <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-bold">تطبيق حسابي D3</span>
+                            <h3 class="font-bold text-slate-900 text-base">مسألة المتزلج والشغل المبذول بواسطة الاحتكاك</h3>
+                            <p class="text-xs text-slate-600 leading-relaxed">
+                                يتحرك متزلج كتلته 52 kg بسرعة 2.5 m/s ويتوقف بفعل الاحتكاك مع الجليد خلال مسافة 24 m. ما مقدار الشغل المبذول بفعل الاحتكاك لجعل المتزلج يتوقف؟
+                            </p>
+                        </div>
+                        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-2">
+                            <button onclick="toggleAnswer('skierAns')" class="w-full py-2 bg-blue-700 text-white font-bold rounded-xl text-xs hover:bg-blue-800 transition">
+                                إظهار خطوات الحل النموذجية
+                            </button>
+                            <div id="skierAns" class="hidden text-xs text-slate-800 space-y-2 pt-2 border-t">
+                                <p><strong>القانون:</strong> <span class="math-symbol">W = ΔKE = ½ m v<sub>f</sub><sup>2</sup> - ½ m v<sub>i</sub><sup>2</sup></span></p>
+                                <p><span class="math-symbol">W = 0 - ½ (52) (2.5)<sup>2</sup></span></p>
+                                <p class="font-bold text-red-600"><span class="math-symbol">W = -162.5 J</span> (الشغل سالب لأن الاحتكاك يقاوم الحركة)</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Problem 2: Book on Shelf -->
+                    <div class="bg-white rounded-3xl p-6 shadow-md border border-slate-100 space-y-4 flex flex-col justify-between">
+                        <div class="space-y-3">
+                            <span class="px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-xs font-bold">تفكير ناقد وإثراء D4</span>
+                            <h3 class="font-bold text-slate-900 text-base">مسألة كتاب الرف وطاقة الوضع بالنسبة لمستويات إسناد مختلفة</h3>
+                            <p class="text-xs text-slate-600 leading-relaxed">
+                                رفع طالب كتاباً كتلته 2.2 kg من فوق سطح طاولة ارتفاعها 0.8 m عن الأرض ووضعه على رف الكتب على ارتفاع 2.1 m عن الأرض. ما مقدار طاقة وضع الكتاب بالنسبة لسطح الطاولة؟
+                            </p>
+                        </div>
+                        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-2">
+                            <button onclick="toggleAnswer('bookAns')" class="w-full py-2 bg-purple-700 text-white font-bold rounded-xl text-xs hover:bg-purple-800 transition">
+                                إظهار خطوات الحل النموذجية
+                            </button>
+                            <div id="bookAns" class="hidden text-xs text-slate-800 space-y-2 pt-2 border-t">
+                                <p><strong>مستوى الإسناد:</strong> سطح الطاولة (<span class="math-symbol">PE = 0</span>)</p>
+                                <p><strong>الارتفاع الرأسي h:</strong> <span class="math-symbol">2.1 m - 0.8 m = 1.3 m</span></p>
+                                <p><strong>حساب طاقة الوضع:</strong> <span class="math-symbol">PE = m · g · h = 2.2 × 9.8 × 1.3</span></p>
+                                <p class="font-bold text-emerald-700"><span class="math-symbol">PE = 28.028 J</span></p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- STEP 6: Final Evaluation (10 Questions) & Certificate -->
+            <section id="view-finalEval" class="hidden space-y-6">
+                <div class="bg-gradient-to-r from-emerald-800 to-teal-900 text-white rounded-3xl p-6 md:p-8 shadow-xl flex justify-between items-center flex-wrap gap-4">
+                    <div>
+                        <span class="px-3 py-1 bg-white/20 text-emerald-200 rounded-full text-xs font-bold">5. التقويم النهائي وإصدار الشهادة (Evaluate)</span>
+                        <h2 class="text-2xl md:text-3xl font-extrabold mt-1">الاختبار النهائي الشامل لدرس الطاقة وحفظها</h2>
+                        <p class="text-emerald-100 text-xs md:text-sm mt-1">أجب عن الـ 10 أسئلة للحصول على شهادة الإنجاز المعتمدة من معلم المادة</p>
+                    </div>
+                </div>
+
+                <!-- Final Quiz Container -->
+                <div id="finalQuizCard" class="bg-white rounded-3xl shadow-xl p-6 md:p-8 border border-slate-100 space-y-6">
+                    <!-- Questions Loaded Dynamically -->
+                </div>
+
+                <!-- Certificate Modal / Display Section -->
+                <div id="certificateContainer" class="hidden bg-white rounded-3xl shadow-2xl p-8 border-4 border-amber-400 max-w-4xl mx-auto my-8 relative overflow-hidden">
+                    <!-- Decorative Background Shapes -->
+                    <div class="absolute -top-12 -left-12 w-40 h-40 bg-amber-100 rounded-full blur-2xl opacity-60"></div>
+                    <div class="absolute -bottom-12 -right-12 w-40 h-40 bg-blue-100 rounded-full blur-2xl opacity-60"></div>
+
+                    <div class="text-center space-y-6 relative z-10 border-2 border-dashed border-amber-300 p-6 md:p-10 rounded-2xl">
+                        <!-- Header Logos -->
+                        <div class="flex justify-between items-center border-b pb-4 border-slate-200 flex-wrap gap-4">
+                            <div class="text-right">
+                                <h4 class="font-extrabold text-blue-900 text-lg">مدارس الأنجال الأهلية</h4>
+                                <p class="text-xs text-slate-500">قسم العلوم - مادة الفيزياء</p>
+                            </div>
+                            <div class="w-16 h-16 bg-gradient-to-tr from-amber-500 to-amber-300 rounded-full flex items-center justify-center text-slate-900 text-2xl font-black shadow-lg">
+                                <i class="fa-solid fa-award"></i>
+                            </div>
+                            <div class="text-left">
+                                <p class="text-xs text-slate-500">العام الدراسي 1446-1447 هـ</p>
+                                <p class="text-xs font-bold text-amber-700">شهادة إتقان تفاعلية</p>
+                            </div>
+                        </div>
+
+                        <!-- Certificate Body -->
+                        <div class="space-y-4 py-4">
+                            <h2 class="text-3xl md:text-4xl font-black text-slate-900 tracking-wide font-cairo">شهادة تفوق وإنجاز</h2>
+                            <p class="text-sm md:text-base text-slate-600">يشهد قسم الفيزياء بمدارس الأنجال الأهلية بأن الطالب:</p>
+                            <h3 id="certStudentName" class="text-2xl md:text-3xl font-extrabold text-blue-900 underline decoration-amber-400 underline-offset-8">---</h3>
+                            <p class="text-sm text-slate-700 max-w-2xl mx-auto leading-relaxed">
+                                قد أتم بنجاح كافة أنشطة المنصة التفاعلية واجتاز التقييم النهائي لدرس <strong class="text-slate-900">"الطاقة وحفظها"</strong> بمستوى أداء تميز بحصوله على درجة:
+                            </p>
+                            <div class="inline-block bg-gradient-to-r from-emerald-600 to-teal-700 text-white px-8 py-3 rounded-2xl text-2xl font-black shadow-lg">
+                                <span id="certScore">0</span> / 10
+                            </div>
+                            <p class="text-xs font-bold text-slate-500">المستوى المكتسب: <span id="certLevel" class="text-purple-700 font-extrabold">---</span></p>
+                        </div>
+
+                        <!-- Signatures & Footer -->
+                        <div class="pt-8 border-t border-slate-200 flex justify-between items-end flex-wrap gap-6 text-sm">
+                            <div class="text-right">
+                                <p class="text-xs text-slate-500">المعلم المتابع والفيزيائي:</p>
+                                <p class="font-bold text-slate-900 text-base mt-1">أ. محمد عمران</p>
+                            </div>
+                            <div class="text-center">
+                                <button onclick="window.print()" class="px-6 py-2.5 bg-slate-900 text-white text-xs font-bold rounded-xl shadow hover:bg-slate-800 transition flex items-center gap-2">
+                                    <i class="fa-solid fa-print"></i> طباعة الشهادة / حفظ PDF
+                                </button>
+                            </div>
+                            <div class="text-left">
+                                <p class="text-xs text-slate-500">ختم الاعتماد:</p>
+                                <p class="font-bold text-blue-900 text-xs mt-1">مدارس الأنجال الأهلية - الأحساء</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 text-xs py-6 mt-12 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 text-center space-y-2">
+            <p>تم تطوير المنصة التعليمية التفاعلية لدرس (الطاقة وحفظها) وفق نموذج التعلّم المتمايز (D1-D4) ودورة 5E</p>
+            <p class="text-slate-500">إشراف المعلم: أ. محمد عمران | مدارس الأنجال الأهلية بالأحساء © 2026</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // Global Application State
+        const state = {
+            studentName: '',
+            level: 'D1', // D1, D2, D3, D4
+            levelTitle: 'D1: مبتدئ / دعم إضافي',
+            diagIndex: 0,
+            diagScore: 0,
+            finalIndex: 0,
+            finalScore: 0,
+            diagAnswers: [],
+            finalAnswers: []
+        };
+
+        // 10 Diagnostic Questions
+        const diagnosticQuestions = [
+            { q: "عندما تزداد سرعة جسم إلى ضعفي سرعتها، فإن طاقته الحركية تزداد بمقدار:", options: ["ضعفين", "3 أضعاف", "4 أضعاف", "8 أضعاف"], correct: 2 },
+            { q: "الشغل المبذول بواسطة قوة الجاذبية عند سقوط كرة نحو الأرض يكون:", options: ["موجباً وتزداد الطاقة", "سالباً وتقل الطاقة", "صفراً", "سالباً وتزداد الطاقة"], correct: 0 },
+            { q: "طاقة الوضع الجاذبية لجسم تعتمد على مكان الجسم بالنسبة لـ:", options: ["مستوى الإسناد", "سرعة الصوت", "شكل الجسم", "درجة الحرارة"], correct: 0 },
+            { q: "ما هي الطاقة المختزنة في الزنبرك أو النابض المنضغط؟", options: ["طاقة حركية خطية", "طاقة وضع مرونية", "طاقة وضع جاذبية", "طاقة سكونية"], correct: 1 },
+            { q: "في النظام المغلق والمعزول، ينص قانون حفظ الطاقة على أن الطاقة الكلية:", options: ["تتضاعف باستمرار", "تبقى ثابته ولا تفنى", "تقل بالتدريج", "تتحول فقط إلى طاقة حركية"], correct: 1 },
+            { q: "أي التصادمات التالية تكون الطاقة الحركية فيه محفوظة (KEi = KEf)؟", options: ["التصادم المرن", "التصادم عديم المرونة", "التصادم الانفجاري", "جميع ما ذكر"], correct: 0 },
+            { q: "معادلة تكافؤ الكتلة والطاقة الشهيرة لأينشتاين هي:", options: ["E = m g h", "E = ½ m v²", "E₀ = m c²", "W = F d"], correct: 2 },
+            { q: "المستوى الذي نختار أن تكون طاقة الوضع PE عنده مساوية للصفر يُسمى:", options: ["مستوى الاتزان", "مستوى الإسناد", "المستوى المائل", "المستوى الحركي"], correct: 1 },
+            { q: "إذا سقط جسم من أعلى مبنى بدون احتكاك، فإن النقص في طاقة الوضع يرافقه:", options: ["نقص في الطاقة الحركية", "زيادة مساوية في الطاقة الحركية", "ثبات السرعة", "تلاشي الطاقة الميكانيكية"], correct: 1 },
+            { q: "التصادم الذي تلتحم فيه الأجسام وتتحرك كجسم واحد هو تصادم:", options: ["مرن تماماً", "عديم المرونة", "فوق مرن", "حركي دوراني"], correct: 1 }
+        ];
+
+        // 10 Final Questions
+        const finalQuestions = [
+            { q: "احسب الطاقة الحركية لسيارة كتلتها 800 kg تتحرك بسرعة 20 m/s:", options: ["8,000 J", "160,000 J", "320,000 J", "16,000 J"], correct: 1 },
+            { q: "رفع طالب صخرة كتلتها 5 kg إلى ارتفاع 2 m عن سطح الأرض، فما طاقة وضعها الجاذبية؟ (g=9.8 m/s²)", options: ["10 J", "49 J", "98 J", "19.6 J"], correct: 2 },
+            { q: "تعتمد الطاقة الحركية الدورانية للبلبل أو الجسم الدوار على السرعة الدورانية و:", options: ["ارتفاع الجسم", "توزيع كتلة الجسم", "شحنته الكهربائية", "لون الجسم"], correct: 1 },
+            { q: "في القفز بالزانة، تحول طاقة ركض اللاعب إلى طاقة وضع مرونية عند:", options: ["بداية الجري", "انثناء الزانة في الأرض", "الوصول للوسادة", "ترك الزانة"], correct: 1 },
+            { q: "عند تصادم سيارتين وتوقفهما بالكامل، تتحول الطاقة الحركية إلى:", options: ["طاقة وضع جاذبية", "حرارة وصوت وشغل تشوه الهياكل", "طاقة دورانية", "طاقة سكونية أينشتاينية"], correct: 1 },
+            { q: "في التصادم الانفجاري (فوق المرن)، تكون الطاقة الحركية النهائية (KEf):", options: ["أكبر من الابتدائية KEi", "أقل من الابتدائية KEi", "مساوية للابتدائية", "صفر دائماً"], correct: 0 },
+            { q: "أي العوامل التالية لا تؤثر في طاقة الوضع الجاذبية للجسم عند رفع رأسياً؟", options: ["كتلة الجسم", "ارتفاع الجسم", "تسارع الجاذبية", "سرعة رفع الجسم الأفقية"], correct: 3 },
+            { q: "إذا بذل نظام شغلاً سالباً قدره -200 J على المحيط، فإن طاقته الحركية:", options: ["تزداد بمقدار 200 J", "تقل بمقدار 200 J", "تبقى ثابته", "تصبح صفراً فجأة"], correct: 1 },
+            { q: "الطاقة الميكانيكية الكلية لنظام E هي مجموع:", options: ["KE + PE", "W + F", "m + v", "E₀ + c²"], correct: 0 },
+            { q: "حسب نظرية أينشتاين، المادة (الكتلة) تعتبر شكل من أشكال:", options: ["الشغل الضائع", "الطاقة المختزنة السكونية", "الاحتكاك المقاوم", "السرعة المتجهة"], correct: 1 }
+        ];
+
+        // --- Step 0: Login Handler ---
+        function handleLogin(e) {
+            e.preventDefault();
+            const nameInput = document.getElementById('studentName').value.trim();
+            if(!nameInput) return;
+
+            state.studentName = nameInput;
+            document.getElementById('headerStudentName').innerText = nameInput;
+            document.getElementById('userInfoHeader').classList.remove('hidden');
+
+            // Switch to Diagnostic Quiz View
+            document.getElementById('view-login').classList.add('hidden');
+            document.getElementById('view-diagnostic').classList.remove('hidden');
+            renderDiagnosticQuestion();
+        }
+
+        // --- Step 1: Render Diagnostic Questions ---
+        function renderDiagnosticQuestion() {
+            const container = document.getElementById('diagnosticQuizCard');
+            const q = diagnosticQuestions[state.diagIndex];
+
+            document.getElementById('diagProgress').innerText = state.diagIndex + 1;
+
+            container.innerHTML = `
+                <div class="space-y-4">
+                    <h3 class="text-base md:text-lg font-bold text-slate-800">${state.diagIndex + 1}. ${q.q}</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        ${q.options.map((opt, i) => `
+                            <button onclick="answerDiagnostic(${i})" 
+                                    class="p-4 text-right rounded-2xl border border-slate-200 hover:border-blue-500 hover:bg-blue-50/50 transition font-semibold text-xs md:text-sm text-slate-700">
+                                ${opt}
+                            </button>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function answerDiagnostic(choiceIndex) {
+            if(choiceIndex === diagnosticQuestions[state.diagIndex].correct) {
+                state.diagScore++;
+            }
+            state.diagIndex++;
+
+            if(state.diagIndex < diagnosticQuestions.length) {
+                renderDiagnosticQuestion();
+            } else {
+                finishDiagnostic();
+            }
+        }
+
+        // Finish Diagnostic & Differentiate Student Level
+        function finishDiagnostic() {
+            document.getElementById('view-diagnostic').classList.add('hidden');
+            document.getElementById('view-levelResult').classList.remove('hidden');
+
+            const score = state.diagScore; // 0 to 10
+            let badgeClass = 'badge-d1';
+
+            if(score <= 3) {
+                state.level = 'D1';
+                state.levelTitle = 'D1: مستوى مبتدئ (يحتاج دعم مفاهيمي أساسي)';
+                badgeClass = 'badge-d1';
+                document.getElementById('levelIconBox').className = "w-24 h-24 rounded-full mx-auto flex items-center justify-center text-4xl shadow-xl bg-red-100 text-red-600";
+                document.getElementById('levelDesc').innerText = "تم تخصيص مسار إثرائي مبسط لك لتركيز الفهم على تعريف الشغل، الطاقة الحركية وطاقة الوضع ومستوى الإسناد بشكل تدرجي ناعم.";
+                document.getElementById('levelPlanList').innerHTML = `
+                    <li>مراجعة المفاهيم الأساسية للشغل والطاقة الحركية وطاقة الوضع.</li>
+                    <li>تجارب محاكاة بصرية مبسطة لتحولات الطاقة.</li>
+                    <li>أسئلة مرحلية توجيهية مع دعم فوري للحلول.</li>
+                `;
+            } else if(score <= 6) {
+                state.level = 'D2';
+                state.levelTitle = 'D2: مستوى متوسط (مفهوم أساسي وثابت)';
+                badgeClass = 'badge-d2';
+                document.getElementById('levelIconBox').className = "w-24 h-24 rounded-full mx-auto flex items-center justify-center text-4xl shadow-xl bg-amber-100 text-amber-600";
+                document.getElementById('levelDesc').innerText = "لديك حصيلة جيدة في المفاهيم الأساسية. تم إعداد مسار تعليمي يركز على تطبيق القوانين الرياضية وحفظ الطاقة الميكانيكية.";
+                document.getElementById('levelPlanList').innerHTML = `
+                    <li>تطبيق قوانين الشغل والطاقة (W=ΔKE & PE=mgh).</li>
+                    <li>شرح حفظ الطاقة الميكانيكية والتصادمات بشكل كامل.</li>
+                    <li>تدريبات حسابية متوسطة التحدي.</li>
+                `;
+            } else if(score <= 8) {
+                state.level = 'D3';
+                state.levelTitle = 'D3: مستوى متقدم (تطبيق حسابي متمكن)';
+                badgeClass = 'badge-d3';
+                document.getElementById('levelIconBox').className = "w-24 h-24 rounded-full mx-auto flex items-center justify-center text-4xl shadow-xl bg-blue-100 text-blue-600";
+                document.getElementById('levelDesc').innerText = "ممتاز! تمتلك فهماً متقدماً للقوانين الفيزيائية. سيركز مسارك على حل المسائل المركبة والتطبيق في الحياة العملية.";
+                document.getElementById('levelPlanList').innerHTML = `
+                    <li>حل مسائل المتزلج، السيارات المسرعة، وطاقة الوضع المرونية.</li>
+                    <li>تحليل رسومات PhET البيانية وحفظ الطاقة الميكانيكية.</li>
+                    <li>أنشطة إثرائية للتفكير التحليلي.</li>
+                `;
+            } else {
+                state.level = 'D4';
+                state.levelTitle = 'D4: مستوى متفوق (تفكير ناقد وإثراء فيزيائي)';
+                badgeClass = 'badge-d4';
+                document.getElementById('levelIconBox').className = "w-24 h-24 rounded-full mx-auto flex items-center justify-center text-4xl shadow-xl bg-purple-100 text-purple-600";
+                document.getElementById('levelDesc').innerText = "أداء استثنائي! تم فتح كافة تحديات التفكير الناقد والمستويات العليا والإثراءات الفيزيائية المتقدمة لك مباشرة.";
+                document.getElementById('levelPlanList').innerHTML = `
+                    <li>مسائل التحدي الناقد والتصادمات غير المرنة المركبة.</li>
+                    <li>دراسة تكافؤ الكتلة والطاقة (E₀ = m c²) وتغير الطاقة الحرارية.</li>
+                    <li>قيادة التجارب التفاعلية والتوسع في التطبيقات.</li>
+                `;
+            }
+
+            document.getElementById('levelTitle').innerText = state.levelTitle;
+            const badge = document.getElementById('studentLevelBadge');
+            badge.innerText = state.level;
+            badge.className = `px-3 py-1 rounded-full text-xs font-bold ${badgeClass}`;
+        }
+
+        // Start Learning Path
+        function startLearningPath() {
+            document.getElementById('view-levelResult').classList.add('hidden');
+            document.getElementById('mainNav').classList.remove('hidden');
+            switchTab('engage');
+        }
+
+        // Tab Switching Logic
+        function switchTab(tabId) {
+            const tabs = ['engage', 'explain', 'simulation', 'enrichment', 'finalEval'];
+            tabs.forEach(t => {
+                const btn = document.getElementById(`tab-${t}`);
+                const view = document.getElementById(`view-${t}`);
+                if (btn && view) {
+                    if (t === tabId) {
+                        btn.className = "nav-btn px-4 py-2.5 rounded-xl transition flex items-center gap-2 whitespace-nowrap bg-blue-950 text-amber-400 font-bold shadow";
+                        view.classList.remove('hidden');
+                    } else {
+                        btn.className = "nav-btn px-4 py-2.5 rounded-xl transition flex items-center gap-2 whitespace-nowrap text-slate-600 hover:bg-slate-100 font-semibold";
+                        view.classList.add('hidden');
+                    }
+                }
+            });
+
+            // Trigger Canvas Animation Redraws when tab becomes visible
+            if(tabId === 'engage') initBouncingBallSim();
+            if(tabId === 'simulation') initPendulumSim();
+            if(tabId === 'finalEval' && state.finalIndex === 0) renderFinalQuestion();
+        }
+
+        // --- Differentiation Filter in Explain View ---
+        function filterContent(level) {
+            const cards = document.querySelectorAll('.concept-card');
+            cards.forEach(card => {
+                if (level === 'all' || card.classList.contains(level)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // --- Answers Toggle Utility ---
+        function toggleAnswer(id) {
+            const el = document.getElementById(id);
+            if (el) el.classList.toggle('hidden');
+        }
+
+        // --- Phase Quiz Checker ---
+        function checkPhaseAnswer(quizId, optionIndex, isCorrect, btnEl) {
+            const fb = document.getElementById(`phaseFb-${quizId}`);
+            fb.classList.remove('hidden');
+            if(isCorrect) {
+                fb.className = "p-3 rounded-xl text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-300";
+                fb.innerHTML = "<i class='fa-solid fa-circle-check'></i> إجابة صحيحة ممتازة! أحسنت الفهم الفيزيائي.";
+            } else {
+                fb.className = "p-3 rounded-xl text-xs font-bold bg-red-100 text-red-800 border border-red-300";
+                fb.innerHTML = "<i class='fa-solid fa-circle-xmark'></i> إجابة خاطئة. حاول قراءة الفقرة السابقة وإعادة المحاولة.";
+            }
+        }
+
+        // ==========================================
+        // 1. BOUNCING BALL SIMULATION (Engage Phase)
+        // ==========================================
+        let bCanvas, bCtx;
+        let ball = { y: 50, vy: 0, r: 16, height: 3.0, elasticity: 0.8, isDropping: false };
+
+        function initBouncingBallSim() {
+            bCanvas = document.getElementById('bouncingBallCanvas');
+            if(!bCanvas) return;
+            bCtx = bCanvas.getContext('2d');
+            bCanvas.width = bCanvas.parentElement.clientWidth;
+            bCanvas.height = bCanvas.parentElement.clientHeight;
+            resetBouncingBall();
+        }
+
+        function resetBouncingBall() {
+            if(!bCanvas) return;
+            ball.y = 40;
+            ball.vy = 0;
+            ball.isDropping = true;
+            animateBouncingBall();
+        }
+
+        function updateDropHeight(val) {
+            document.getElementById('dropHeightVal').innerText = val;
+            ball.height = parseFloat(val);
+            resetBouncingBall();
+        }
+
+        function changeBallType(val) {
+            ball.elasticity = parseFloat(val);
+            resetBouncingBall();
+        }
+
+        function animateBouncingBall() {
+            if(!bCtx || !ball.isDropping) return;
+            bCtx.clearRect(0, 0, bCanvas.width, bCanvas.height);
+
+            const floorY = bCanvas.height - 30;
+            const gravity = 0.4;
+
+            ball.vy += gravity;
+            ball.y += ball.vy;
+
+            // Bounce Check
+            if (ball.y + ball.r >= floorY) {
+                ball.y = floorY - ball.r;
+                ball.vy = -ball.vy * ball.elasticity;
+
+                if (Math.abs(ball.vy) < 1) {
+                    ball.isDropping = false; // Stop when energy dissipates
+                }
+            }
+
+            // Draw Floor
+            bCtx.fillStyle = '#334155';
+            bCtx.fillRect(0, floorY, bCanvas.width, 30);
+
+            // Draw Ball
+            bCtx.beginPath();
+            bCtx.arc(bCanvas.width / 2, ball.y, ball.r, 0, Math.PI * 2);
+            bCtx.fillStyle = '#f59e0b';
+            bCtx.fill();
+            bCtx.lineWidth = 3;
+            bCtx.strokeStyle = '#d97706';
+            bCtx.stroke();
+
+            if (ball.isDropping) {
+                requestAnimationFrame(animateBouncingBall);
+            }
+        }
+
+        // ==========================================
+        // 2. PENDULUM SIMULATION (Simulation Phase)
+        // ==========================================
+        let pCanvas, pCtx;
+        let pendulum = {
+            angle: Math.PI / 4,
+            angleVel: 0,
+            angleAccel: 0,
+            length: 140,
+            origin: { x: 0, y: 30 },
+            isRunning: true,
+            maxAngle: Math.PI / 4
+        };
+
+        function initPendulumSim() {
+            pCanvas = document.getElementById('pendulumCanvas');
+            if(!pCanvas) return;
+            pCtx = pCanvas.getContext('2d');
+            pCanvas.width = pCanvas.parentElement.clientWidth;
+            pCanvas.height = pCanvas.parentElement.clientHeight;
+            pendulum.origin.x = pCanvas.width / 2;
+            pendulum.isRunning = true;
+            animatePendulum();
+        }
+
+        function startPendulumSim() { pendulum.isRunning = true; animatePendulum(); }
+        function pausePendulumSim() { pendulum.isRunning = false; }
+        function changePendulumAngle(deg) {
+            document.getElementById('angleVal').innerText = deg;
+            const rad = (deg * Math.PI) / 180;
+            pendulum.angle = rad;
+            pendulum.maxAngle = rad;
+            pendulum.angleVel = 0;
+        }
+
+        function animatePendulum() {
+            if(!pCtx) return;
+
+            const gravity = 0.4;
+            pendulum.angleAccel = (-1 * gravity / pendulum.length) * Math.sin(pendulum.angle);
+            pendulum.angleVel += pendulum.angleAccel;
+            pendulum.angle += pendulum.angleVel;
+
+            const x = pendulum.origin.x + pendulum.length * Math.sin(pendulum.angle);
+            const y = pendulum.origin.y + pendulum.length * Math.cos(pendulum.angle);
+
+            pCtx.clearRect(0, 0, pCanvas.width, pCanvas.height);
+
+            // Draw String
+            pCtx.beginPath();
+            pCtx.moveTo(pendulum.origin.x, pendulum.origin.y);
+            pCtx.lineTo(x, y);
+            pCtx.strokeStyle = '#94a3b8';
+            pCtx.lineWidth = 2;
+            pCtx.stroke();
+
+            // Draw Bob
+            pCtx.beginPath();
+            pCtx.arc(x, y, 18, 0, Math.PI * 2);
+            pCtx.fillStyle = '#2563eb';
+            pCtx.fill();
+            pCtx.lineWidth = 2;
+            pCtx.strokeStyle = '#60a5fa';
+            pCtx.stroke();
+
+            // Calculate Energy Values for Dashboard
+            const h = pendulum.length * (1 - Math.cos(pendulum.angle));
+            const hMax = pendulum.length * (1 - Math.cos(pendulum.maxAngle));
+            
+            const peRatio = hMax > 0 ? (h / hMax) : 0;
+            const keRatio = Math.max(0, 1 - peRatio);
+
+            const totalEnergy = 100; // Normalized Joules
+            const peVal = (peRatio * totalEnergy).toFixed(1);
+            const keVal = (keRatio * totalEnergy).toFixed(1);
+
+            document.getElementById('keBar').style.width = `${keRatio * 100}%`;
+            document.getElementById('peBar').style.width = `${peRatio * 100}%`;
+            document.getElementById('keValText').innerText = `${keVal} J`;
+            document.getElementById('peValText').innerText = `${peVal} J`;
+            document.getElementById('totalEnergyText').innerText = `100.0 J`;
+
+            if (pendulum.isRunning) {
+                requestAnimationFrame(animatePendulum);
+            }
+        }
+
+        // ==========================================
+        // 3. FINAL EVALUATION & CERTIFICATE GENERATION
+        // ==========================================
+        function renderFinalQuestion() {
+            const container = document.getElementById('finalQuizCard');
+            const q = finalQuestions[state.finalIndex];
+
+            container.innerHTML = `
+                <div class="space-y-4">
+                    <div class="flex justify-between items-center text-sm font-bold text-slate-500 border-b pb-3">
+                        <span>سؤال ${state.finalIndex + 1} من 10</span>
+                        <span class="text-emerald-700">التقويم النهائي الشامل</span>
+                    </div>
+                    <h3 class="text-base md:text-lg font-bold text-slate-900">${state.finalIndex + 1}. ${q.q}</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        ${q.options.map((opt, i) => `
+                            <button onclick="answerFinal(${i})" 
+                                    class="p-4 text-right rounded-2xl border border-slate-200 hover:border-emerald-500 hover:bg-emerald-50/50 transition font-semibold text-xs md:text-sm text-slate-800">
+                                ${opt}
+                            </button>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function answerFinal(choiceIndex) {
+            if(choiceIndex === finalQuestions[state.finalIndex].correct) {
+                state.finalScore++;
+            }
+            state.finalIndex++;
+
+            if(state.finalIndex < finalQuestions.length) {
+                renderFinalQuestion();
+            } else {
+                finishFinalQuiz();
+            }
+        }
+
+        function finishFinalQuiz() {
+            document.getElementById('finalQuizCard').classList.add('hidden');
+            const cert = document.getElementById('certificateContainer');
+            cert.classList.remove('hidden');
+
+            document.getElementById('certStudentName').innerText = state.studentName;
+            document.getElementById('certScore').innerText = state.finalScore;
+            document.getElementById('certLevel').innerText = state.levelTitle;
+        }
+
+        // Initialize Window on Load
+        window.onload = function() {
+            // Ready state
+        };
+    </script>
+</body>
+</html>
